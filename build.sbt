@@ -10,8 +10,9 @@ libraryDependencies ++= Seq( jdbc ,
                              cache ,
                              ws ,
                              specs2 % Test ,
-  "org.scalanlp" %% "breeze" % "0.10",
-  "org.scalanlp" %% "breeze-natives" % "0.10",
+  "org.scalanlp" %% "breeze" % "0.12",
+  "org.scalanlp" %% "breeze-natives" % "0.12",
+  "org.scalanlp" %% "breeze-viz" % "0.12",
   "org.typelevel" %% "cats" % "0.4.1"
           )
 
