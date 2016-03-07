@@ -5,9 +5,7 @@ package com.scalametrics.controllers
   import play.api.mvc._
   import play.api.libs.json._
 
-
   class Api extends Controller {
-
     def fitRegression = Action(parse.json) { request =>
       request.body match {
         case f: JsSuccess => {
