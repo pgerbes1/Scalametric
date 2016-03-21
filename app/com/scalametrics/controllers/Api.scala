@@ -7,15 +7,9 @@ package com.scalametrics.controllers
 
   class Api extends Controller {
     def fitRegression = Action(parse.json) { request =>
-      request.body match {
-        case f: JsSuccess => {
-
-          Ok("Looks good pal!")
-        }
-        case e: JsError => {
-          Ok("Uh looks like we have a problem")
+          Ok(Json.prettyPrint(request.body))
         }
       }
-    }
-  }
+
+
 
