@@ -21,7 +21,7 @@ case class LogisticRegression(features: DenseMatrix[Double], classifier: DenseVe
 		minimize(f, DenseVector.zeros[Double](features.cols))
 	}
 
-	lazy val trainedWeights = calculateOptimalCoefficients
+	lazy val trainedWeights: DenseVector[Double] = calculateOptimalCoefficients
 
 	def fittedValues(trainWeights: DenseVector[Double]): DenseVector[Double] = {
 		sigmoid(features * trainedWeights)
