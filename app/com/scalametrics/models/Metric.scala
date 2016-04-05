@@ -1,10 +1,8 @@
 package com.scalametrics.models
 
-import algebra.Monoid
-
 object Metric {
   def apply[A: Metric](i: A, j: A): Double = implicitly[Metric[A]].apply(i, j)
-  def norm[A: Metric: Monoid](i: A) = apply(i, Monoid.empty[A])
+  def norm[A: Metric: Monoid](i: A) = apply(i, implicitly[Monoid[A]].empty)
   def from[A](f: (A, A) => Double) = new Metric[A] {
     def apply(i: A, j: A) = f(i, j)
   }
