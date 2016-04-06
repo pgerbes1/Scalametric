@@ -8,6 +8,6 @@ object Functor {
 	def fmap[M[_] : Functor, A, B](m: M[A])(f: A => B) = implicitly[Functor[M]].fmap(m)(f)
 	implicit def ops[A, M[_] : Functor](m: M[A]) = new FunctorOps(m)(implicitly[Functor[M]])
 }
-final class FunctorOps[A, M[_] : Functor](m: M[A]) {
+class FunctorOps[A, M[_] : Functor](m: M[A]) {
 	def fmap[B](f: A => B): M[B] =  implicitly[Functor[M]].fmap(m)(f)
 }
