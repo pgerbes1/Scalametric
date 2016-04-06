@@ -8,4 +8,8 @@ object Applicative {
 	def apply[M[_] : Applicative]: Applicative[M] = implicitly
 	def join[M[_] : Applicative, A, B](m1: M[A], m2: M[B]): M[(A, B)] =
 		implicitly[Applicative[M]].join(m1, m2)
+	implicit def ops[A, M[_] : Applicative](a: M[A]) = new ApplicativeOps(a)(implicitly[Applicative[M]])
+}
+class ApplicativeOps[A, M[_] : Applicative](a: M[A]) extends FunctorOps[A, M](a) {
+	def join[B](b: M[B]): M[(A, B)] = implicitly[Applicative[M]].join(a, b)
 }

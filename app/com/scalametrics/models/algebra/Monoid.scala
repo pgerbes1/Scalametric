@@ -11,3 +11,4 @@ object Monoid {
 		def operator(s1: A, s2: A): A = associativeOp(s1, s2)
 	}
 }
+

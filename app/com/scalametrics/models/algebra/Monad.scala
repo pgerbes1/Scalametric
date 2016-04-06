@@ -15,4 +15,8 @@ object Monad {
 	def apply[M[_] : Monad]: Monad[M] = implicitly
 	def flatMap[M[_] : Monad, A, B](m: M[A])(f: A => M[B]) = implicitly[Monad[M]].flatMap(m)(f)
 	def map[M[_] : Monad, A, B](m: M[A])(f: A => B) = implicitly[Monad[M]].fmap(m)(f)
+	implicit def ops[A, M[_] : Monad](m: M[A]) = new MonadOps(m)(implicitly[Monad[M]])
+}
+class MonadOps[A, M[_]](m: M[A])(implicit monad: Monad[M]) extends ApplicativeOps[A, M](m) {
+	def flatMap[B](f: A => M[B]): M[B] = monad.flatMap(m)(f)
 }
