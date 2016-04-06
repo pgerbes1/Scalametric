@@ -1,4 +1,4 @@
-package com.scalametrics.models
+package  models.algebra
 
 trait Monoid[A] extends Semigroup[A] {
 	def empty: A

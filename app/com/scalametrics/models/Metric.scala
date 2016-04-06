@@ -1,5 +1,7 @@
 package com.scalametrics.models
 
+import models.algebra.Monoid
+
 object Metric {
   def apply[A: Metric](i: A, j: A): Double = implicitly[Metric[A]].apply(i, j)
   def norm[A: Metric: Monoid](i: A) = apply(i, implicitly[Monoid[A]].empty)
