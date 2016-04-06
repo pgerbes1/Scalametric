@@ -1,4 +1,4 @@
-package  models.algebra
+package  com.scalametrics.models.algebra
 
 trait Monad[M[_]] extends Applicative[M] {
   def unit[A]: M[A]

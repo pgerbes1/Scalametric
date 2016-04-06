@@ -1,4 +1,4 @@
-package models.algebra
+package com.scalametrics.models.algebra
 
 trait Semigroup[A] {
 	def operator(s1: A, s2: A): A

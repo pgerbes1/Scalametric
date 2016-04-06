@@ -1,6 +1,6 @@
 package com.scalametrics.models
 
-import models.algebra.Monoid
+import com.scalametrics.models.algebra.Monoid
 
 object Metric {
   def apply[A: Metric](i: A, j: A): Double = implicitly[Metric[A]].apply(i, j)

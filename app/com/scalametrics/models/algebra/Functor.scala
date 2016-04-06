@@ -1,4 +1,4 @@
-package  models.algebra
+package  com.scalametrics.models.algebra
 
 trait Functor[M[_]] {
 	def fmap[A, B](m: M[A])(fn: (A) => B): M[B]

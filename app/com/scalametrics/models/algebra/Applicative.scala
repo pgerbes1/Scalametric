@@ -1,4 +1,4 @@
-package  models.algebra
+package  com.scalametrics.models.algebra
 
 trait Applicative[M[_]] extends Functor[M] {
 	def apply[A](v: A): M[A]
