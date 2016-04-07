@@ -6,8 +6,8 @@ trait Applicative[M[_]] extends Functor[M] {
 }
 object Applicative {
 	def apply[M[_] : Applicative]: Applicative[M] = implicitly
-	def pure[A, M[_] : Applicative](v: A) = implicitly[Applicative[M]].pure(v)
-	def splat[M[_] : Applicative, A, B](a: M[A])(f: M[A => B]) = implicitly[Applicative[M]].splat(a)(f)
+	def pure[A, M[_] : Applicative](v: A): M[A] = implicitly[Applicative[M]].pure(v)
+	def splat[M[_] : Applicative, A, B](a: M[A])(f: M[A => B]): M[B] = implicitly[Applicative[M]].splat(a)(f)
 
 	implicit val listApplicative: Applicative[List] = new Applicative[List] {
 		def pure[A](v: A): List[A] = List(v)
@@ -36,9 +36,7 @@ object Applicative {
 		}
 	}
 	implicit class ApplicativeOps[A, M[_] : Applicative](a: M[A]) {
-		def splat[B](f: M[A => B]) = implicitly[Applicative[M]].splat(a)(f)
-	}
-	implicit class PureOp[A](v: A) {
-		def pure[M[_] : Applicative] = implicitly[Applicative[M]].pure(v)
+		def pure(v: A): M[A] = implicitly[Applicative[M]].pure(v)
+		def splat[B](f: M[A => B]): M[B] = implicitly[Applicative[M]].splat(a)(f)
 	}
 }

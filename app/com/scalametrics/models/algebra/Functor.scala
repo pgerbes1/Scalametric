@@ -5,7 +5,7 @@ trait Functor[M[_]] {
 }
 object Functor {
 	def apply[M[_] : Functor]: Functor[M] = implicitly
-	def fmap[M[_] : Functor, A, B](m: M[A])(f: A => B) = implicitly[Functor[M]].fmap(m)(f)
+	def fmap[M[_] : Functor, A, B](m: M[A])(f: A => B): M[B] = implicitly[Functor[M]].fmap(m)(f)
 
 	implicit val listFunctor: Functor[List] = new Functor[List] {
 		def fmap[A, B](l: List[A])(f: A => B): List[B] = {
