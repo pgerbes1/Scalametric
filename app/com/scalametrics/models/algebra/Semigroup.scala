@@ -14,7 +14,7 @@ object Semigroup {
 	implicit val floatMonoid = new Semigroup[Float] {
 		def add(s1: Float, s2: Float) = s1 + s2
 	}
-	implicit class MonoidOps[A : Semigroup](s1: A) {
-		def add(s2: A) = implicitly[Monoid[A]].add(s1, s2)
+	implicit class SemigroupOps[A : Semigroup](s1: A) {
+		def add(s2: A) = implicitly[Semigroup[A]].add(s1, s2)
 	}
 }
