@@ -1,4 +1,4 @@
-package com.scalametrics.models
+package com.scalametrics.models.algebra
 
 import scala.languageFeature.higherKinds
 

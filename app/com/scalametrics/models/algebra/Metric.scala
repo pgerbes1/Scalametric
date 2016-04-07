@@ -1,6 +1,4 @@
-package com.scalametrics.models
-
-import com.scalametrics.models.algebra.Monoid
+package com.scalametrics.models.algebra
 
 trait Metric[-A] {
   def apply(i: A, j: A): Double
