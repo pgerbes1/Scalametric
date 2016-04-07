@@ -18,6 +18,7 @@ object Field {
 		def add(s1: A, s2: A): A = adder(s1, s2)
 		override def inverse(v: A): A = minus(empty, v)
 	}
+	// No implicit for Int. (x: Int)  => x / 2 does not always return Int
 	implicit val doubleField: Field[Double] = new Field[Double] {
 		def empty = 0.0
 		def identity = 1.0

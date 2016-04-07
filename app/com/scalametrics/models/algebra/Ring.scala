@@ -15,15 +15,21 @@ object Ring {
 		def add(s1: A, s2: A): A = adder(s1, s2)
 		override def inverse(v: A): A = minus(empty, v)
 	}
-
-	implicit val doubleMonoid = new Ring[Double] {
+	implicit val intRing = new Ring[Int] {
+		def empty: Int = 0
+		def identity: Int = 1
+		override def inverse(v: Int) = -v
+		def multiply(m1: Int, m2: Int): Int = m1 * m2
+		def add(s1: Int, s2: Int): Int = s1 + s2
+	}
+	implicit val doubleRing = new Ring[Double] {
 		def empty: Double = 0.0
 		def identity: Double = 1.0
 		override def inverse(v: Double) = -v
 		def multiply(m1: Double, m2: Double): Double = m1 * m2
 		def add(s1: Double, s2: Double): Double = s1 + s2
 	}
-	implicit val floatMonoid = new Ring[Float] {
+	implicit val floatRing = new Ring[Float] {
 		def empty = 0.0.toFloat
 		def identity: Float = 1.0.toFloat
 		override def inverse(v: Float) = -v

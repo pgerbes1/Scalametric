@@ -10,6 +10,10 @@ object Monoid {
 		lazy val empty = z
 		def add(s1: A, s2: A): A = associativeOp(s1, s2)
 	}
+	implicit val intMonoid = new Monoid[Int] {
+		def empty = 0
+		def add(s1: Int, s2: Int) = s1 + s2
+	}
 	implicit val doubleMonoid = new Monoid[Double] {
 		def empty = 0.0
 		def add(s1: Double, s2: Double) = s1 + s2

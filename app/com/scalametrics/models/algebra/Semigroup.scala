@@ -8,10 +8,13 @@ object Semigroup {
  def derive[A](associativeOp: (A, A) => A): Semigroup[A] = new Semigroup[A] {
 	  def add(s1: A, s2: A): A = associativeOp(s1, s2)
  }
-	implicit val doubleMonoid = new Semigroup[Double] {
+	implicit val intSemigroup = new Semigroup[Int] {
+		def add(s1: Int, s2: Int) = s1 + s2
+	}
+	implicit val doubleSemigroup = new Semigroup[Double] {
 		def add(s1: Double, s2: Double) = s1 + s2
 	}
-	implicit val floatMonoid = new Semigroup[Float] {
+	implicit val floatSemigroup = new Semigroup[Float] {
 		def add(s1: Float, s2: Float) = s1 + s2
 	}
 	implicit class SemigroupOps[A : Semigroup](s1: A) {
