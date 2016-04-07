@@ -1,7 +1,6 @@
 package  com.scalametrics.models.algebra
 
 //Provide implementation for flatMap and Monad laws take care of the rest
-//So much for free
 trait Monad[M[_]] extends Applicative[M] {
 	override def pure[A](v: A): M[A]
 	def flatMap[A, B](m: M[A])(f: A => M[B]): M[B]
@@ -11,7 +10,6 @@ trait Monad[M[_]] extends Applicative[M] {
 	def compose[A, B, C](f1: A => M[B])(f2: B => M[C]): A => M[C] = a => flatMap(f1(a))(f2)
 	def join[A, B, C](m1: M[A])(m2: M[B])(f: (A, B) => C): M[C] = flatMap(m1)(a => fmap(m2)(b => f(a, b)))
 }
-
 object Monad {
 	def apply[M[_] : Monad]: Monad[M] = implicitly
 	def pure[M[_] : Monad, A](v: A): M[A] = implicitly[Monad[M]].pure(v)
@@ -29,7 +27,6 @@ object Monad {
 		def pure[A](v: A): Option[A] = Option(v)
 		def flatMap[A, B](o: Option[A])(f: A => Option[B]): Option[B] = o.flatMap(f)
 	}
-
   implicit class MonadOps[A, M[_] : Monad](m: M[A]) {
 	  def pure(v: A): M[A] = implicitly[Monad[M]].pure(v)
 	  def fmap[B](f: A => B): M[B] = implicitly[Monad[M]].fmap(m)(f)
