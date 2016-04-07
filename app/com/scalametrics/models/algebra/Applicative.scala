@@ -9,7 +9,7 @@ object Applicative {
 	def pure[A, M[_] : Applicative](v: A) = implicitly[Applicative[M]].pure(v)
 	def splat[M[_] : Applicative, A, B](a: M[A])(f: M[A => B]) = implicitly[Applicative[M]].splat(a)(f)
 
-	implicit val ListApplicative: Applicative[List] = new Applicative[List] {
+	implicit val listApplicative: Applicative[List] = new Applicative[List] {
 		def pure[A](v: A): List[A] = List(v)
 		def fmap[A, B](l: List[A])(f: A => B): List[B] = {
 			l.map(f(_))
@@ -21,7 +21,7 @@ object Applicative {
 			} yield j(i)
 		}
 	}
-	implicit val OptionApplicative = new Applicative[Option] {
+	implicit val optionApplicative = new Applicative[Option] {
 		def pure[A](v: A): Option[A] = v match {
 			case Some(_) => Option(v)
 			case None => None
