@@ -4,10 +4,11 @@ trait Monoid[A] extends Semigroup[A] {
 	def empty: A
 }
 object Monoid {
-	def empty[A: Monoid](m: A): A = implicitly[Monoid[A]].empty
-	def operator[A : Monoid](s1: A, s2: A): A = implicitly[Monoid[A]].add(s1, s2)
-	def derive[A](z: => A)(associativeOp: (A, A) => A): Monoid[A] = new Monoid[A] {
-		lazy val empty = z
+	def empty[A: Monoid]: A = implicitly[Monoid[A]].empty
+	def add[A : Monoid](s1: A, s2: A): A = implicitly[Monoid[A]].add(s1, s2)
+
+	def derive[A](e: => A)(associativeOp: (A, A) => A): Monoid[A] = new Monoid[A] {
+		lazy val empty = e
 		def add(s1: A, s2: A): A = associativeOp(s1, s2)
 	}
 	implicit val intMonoid = new Monoid[Int] {
