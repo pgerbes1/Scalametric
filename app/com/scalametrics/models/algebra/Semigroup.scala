@@ -17,8 +17,8 @@ object Semigroup {
 	implicit val floatSemigroup = new Semigroup[Float] {
 		def add(s1: Float, s2: Float) = s1 + s2
 	}
-	implicit def indexSeqSemigroup[A : Semigroup] = new Semigroup[IndexedSeq[A]] {
-		def add(l1: IndexedSeq[A], l2: IndexedSeq[A]): IndexedSeq[A] = l1 ++ l2
+	implicit def indexSeqSemigroup[A](implicit s: Semigroup[A]) = new Semigroup[IndexedSeq[A]] {
+		def add(l1: IndexedSeq[A], l2: IndexedSeq[A]): IndexedSeq[A] = l1.zip(l2).map{case(a, b) => s.add(a, b)}
 	}
 	implicit class SemigroupOps[A : Semigroup](s1: A) {
 		def add(s2: A) = implicitly[Semigroup[A]].add(s1, s2)
