@@ -30,6 +30,12 @@ package com.scalametrics.models.algebra
 		  def inverse(v: Float) = -v
 		  def add(s1: Float, s2: Float) = s1 + s2
 	  }
+	  implicit def indexedSeqGroup[A](implicit m: Group[A]) = new Group[IndexedSeq[A]] {
+		  def empty: IndexedSeq[A] = IndexedSeq()
+		  def inverse(l: IndexedSeq[A]): IndexedSeq[A] = l.map(x => m.inverse(x))
+		  def add(l1: IndexedSeq[A], l2: IndexedSeq[A]): IndexedSeq[A] = IndexedSeq((l1++l2).fold(m.empty)(m.add(_, _)))
+	  }
+
 	  implicit class GroupOps[A : Group](g: A) {
 		  def empty: A = implicitly[Group[A]].empty
 		  def add(g2: A): A = implicitly[Group[A]].add(g, g2)

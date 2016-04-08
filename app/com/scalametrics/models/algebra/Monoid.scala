@@ -23,6 +23,10 @@ object Monoid {
 		def empty = 0.0.toFloat
 		def add(s1: Float, s2: Float) = s1 + s2
 	}
+	implicit def indexedSeqMonoid[A](implicit m: Monoid[A]) = new Monoid[IndexedSeq[A]] {
+		def empty: IndexedSeq[A] = IndexedSeq()
+		def add(l1: IndexedSeq[A], l2: IndexedSeq[A]): IndexedSeq[A] = IndexedSeq((l1++l2).fold(m.empty)(m.add(_, _)))
+	}
 	implicit class MonoidOps[A : Monoid](s1: A) {
 		def empty = implicitly[Monoid[A]].empty
 		def add(s2: A) = implicitly[Monoid[A]].add(s1, s2)
