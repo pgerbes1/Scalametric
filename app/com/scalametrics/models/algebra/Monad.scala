@@ -31,7 +31,7 @@ object Monad {
 	  def fmap[B](f: A => B): M[B] = implicitly[Monad[M]].fmap(m)(f)
 	  def splat[B](f: M[A => B]): M[B] = implicitly[Monad[M]].splat(m)(f)
 		def flatMap[B](f: A => M[B]): M[B] = implicitly[Monad[M]].flatMap(m)(f)
-		def flatten[A](m: M[M[A]]): M[A] = implicitly[Monad[M]].flatten(m)
+		def flatten(m: M[M[A]]): M[A] = implicitly[Monad[M]].flatten(m)
 	  def join[B, C](m2: M[B])(f: (A, B) => C): M[C] = implicitly[Monad[M]].join(m)(m2)(f)
 	}
 }
