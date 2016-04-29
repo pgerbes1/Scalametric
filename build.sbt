@@ -15,7 +15,7 @@ libraryDependencies ++= Seq( jdbc ,
   "org.scalanlp" %% "breeze-viz" % "0.12",
   "org.typelevel" %% "cats" % "0.4.1",
   "org.spire-math" %% "spire" % "0.11.0",
-  "net.liftweb" % "lift-common" % "2.0"
+  "org.scalaz" %% "scalaz-core" % "7.2.2"
           )
 
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )  
