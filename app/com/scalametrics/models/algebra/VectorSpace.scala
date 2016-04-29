@@ -14,7 +14,7 @@ import scala.languageFeature.higherKinds
 		def group = grp
 		def scale(s: A, v: M[A]) =  if (field.empty != s) f(s, v) else grp.empty
 	}
-	implicit def IndexedSeqVectorSpace[A : Field] = from[A, IndexedSeq]{
+	implicit def Vector[A : Field] = from[A, Vector]{
 		(s, seq) => seq.map{
 			scale => Field.multiply(s, scale)
 		}
