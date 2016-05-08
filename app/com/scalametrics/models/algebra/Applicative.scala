@@ -4,7 +4,7 @@ package  com.scalametrics.models.algebra
 		def pure[A](v: A): M[A]
 		def <*>[A, B](a: M[A])(f: M[A => B]): M[B]
 		def <@>[A, B, C](a: M[A])( b: M[B])(f: (A, B) => C): M[C] = <*>(b)(<*>(a)(pure(f.curried)))
-    }
+	}
 	object Applicative {
 		def apply[M[_] : Applicative]: Applicative[M] = implicitly
 
