@@ -5,6 +5,7 @@ trait Monoid[A] extends Semigroup[A] {
 }
 object Monoid {
 	def empty[A: Monoid]: A = implicitly[Monoid[A]].empty
+
 	def add[A : Monoid](s1: A, s2: A): A = implicitly[Monoid[A]].add(s1, s2)
 
 	def derive[A](e: => A)(associativeOp: (A, A) => A): Monoid[A] = new Monoid[A] {

@@ -1,45 +1,44 @@
 package com.scalametrics.models.algebra
 
 	trait Group[A] extends Monoid[A] {
-		def inverse(v: A): A
+		def inverse(v: A): A = minus(empty, v)
 		def minus(s1: A, s2: A): A = add(s1, inverse(s2))
 	}
   object Group {
-	  def empty[A: Group]: A = implicitly[Group[A]].empty
-	  def add[A : Group](s1: A, s2: A): A = implicitly[Group[A]].add(s1, s2)
-		def inverse[A](v: A)(implicit grp: Group[A]) = grp.inverse(v)
-		def minus[A](s1: A, s2: A)(implicit grp: Group[A]) = grp.add(s1, grp.inverse(s2))
+	  def apply[A : Group]: Group[A] = implicitly
 
-	  def derive[A](e: => A)(adder: (A, A) => A)(inverter: A => A): Group[A] = new Group[A] {
-		  lazy val empty = e
-		  def add(s1: A, s2: A): A = adder(s1, s2)
-		  def inverse(v: A): A = inverter(v)
-	  }
+	  def inverse[A](v: A)(implicit grp: Group[A]) = grp.minus(grp.empty, v)
+
+	  def minus[A](s1: A, s2: A)(implicit grp: Group[A]) = grp.add(s1, grp.inverse(s2))
+
+	  def empty[A: Group]: A = implicitly[Group[A]].empty
+
+	  def add[A : Group](s1: A, s2: A): A = implicitly[Group[A]].add(s1, s2)
+
 	  implicit val intGroup = new Group[Int] {
 		  def empty = 0
-		  def inverse(v: Int) = -v
+		  override def inverse(v: Int) = -v
 		  def add(s1: Int, s2: Int) = s1 + s2
 	  }
 	  implicit val doubleGroup = new Group[Double] {
 		  def empty = 0.0
-		  def inverse(v: Double) = -v
+		  override def inverse(v: Double) = -v
 		  def add(s1: Double, s2: Double) = s1 + s2
 	  }
 	  implicit val floatGroup = new Group[Float] {
 		  def empty = 0.0.toFloat
-		  def inverse(v: Float) = -v
+		  override def inverse(v: Float) = -v
 		  def add(s1: Float, s2: Float) = s1 + s2
 	  }
 	  implicit def indexedSeqGroup[A](implicit m: Group[A]) = new Group[IndexedSeq[A]] {
 		  def empty: IndexedSeq[A] = IndexedSeq()
-		  def inverse(l: IndexedSeq[A]): IndexedSeq[A] = l.map(x => m.inverse(x))
+		  override def inverse(l: IndexedSeq[A]): IndexedSeq[A] = l.map(x => x.inverse)
 		  def add(l1: IndexedSeq[A], l2: IndexedSeq[A]): IndexedSeq[A] = IndexedSeq((l1++l2).fold(m.empty)(m.add(_, _)))
 	  }
-
 	  implicit class GroupOps[A : Group](g: A) {
 		  def empty: A = implicitly[Group[A]].empty
 		  def add(g2: A): A = implicitly[Group[A]].add(g, g2)
-		  def inverse: A = implicitly[Group[A]].inverse(g)
+		  def inverse: A = implicitly[Group[A]].add(implicitly[Group[A]].empty, g)
 		  def minus(g2: A): A = implicitly[Group[A]].add(g, implicitly[Group[A]].inverse(g2))
 	  }
 }
