@@ -1,7 +1,8 @@
 package com.scalametrics.models.algebra
 
-	trait Group[A] extends Monoid[A] {
+  trait Group[A] extends Monoid[A] {
 		def inverse(v: A): A = minus(empty, v)
+
 		def minus(s1: A, s2: A): A = add(s1, inverse(s2))
 	}
   object Group {
@@ -41,4 +42,4 @@ package com.scalametrics.models.algebra
 		  def inverse: A = implicitly[Group[A]].add(implicitly[Group[A]].empty, g)
 		  def minus(g2: A): A = implicitly[Group[A]].add(g, implicitly[Group[A]].inverse(g2))
 	  }
-}
+  }

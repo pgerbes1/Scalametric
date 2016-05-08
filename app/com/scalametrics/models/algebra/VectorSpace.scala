@@ -6,11 +6,11 @@ import scala.languageFeature.higherKinds
 	  implicit def field: Field[A]
 	  implicit def group: Group[M[A]]
 	  def scale(s: A, v: M[A]): M[A]
-}
+  }
   object VectorSpace {
-	    def scale[A, M[_]](s: A, r: M[A])(implicit vs: VectorSpace[A, M]): M[A] = vs.scale(s, r)
+	  def scale[A, M[_]](s: A, r: M[A])(implicit vs: VectorSpace[A, M]): M[A] = vs.scale(s, r)
 
-	    def from[A, M[_]](f: (A, M[A]) => M[A])(implicit fld: Field[A], grp: Group[M[A]]) = new VectorSpace[A, M] {
+	  def from[A, M[_]](f: (A, M[A]) => M[A])(implicit fld: Field[A], grp: Group[M[A]]) = new VectorSpace[A, M] {
 
 		  def field = fld
 
@@ -25,6 +25,6 @@ import scala.languageFeature.higherKinds
 	  }
 	  implicit class VectorSpaceOps[A, M[_]](r: M[A])(implicit vs: VectorSpace[A, M]) {
 		  def scale(s: A) = vs.scale(s, r)
-	}
-}
+	  }
+  }
 
