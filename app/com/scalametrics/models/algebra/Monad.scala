@@ -13,7 +13,7 @@ package  com.scalametrics.models.algebra
 
 	  def compose[A, B, C](f1: A => M[B])(f2: B => M[C]): A => M[C] = a => flatMap(f1(a))(f2)
 
-	  override def <@>[A, B, C](m1: M[A])(m2: M[B])(f: (A, B) => C): M[C] = flatMap(m1)(a => fmap(m2)(b => f(a, b)))
+	  override def <@>[A, B, C](f: (A, B) => C)(m1: M[A])(m2: M[B]): M[C] = flatMap(m1)(a => fmap(m2)(b => f(a, b)))
   }
   object Monad {
 	  def apply[M[_] : Monad]: Monad[M] = implicitly
@@ -30,7 +30,7 @@ package  com.scalametrics.models.algebra
 
 	  def compose[M[_] : Monad, A, B, C](f1: A => M[B])(f2: B => M[C]): A => M[C] = a => implicitly[Monad[M]].flatMap(f1(a))(f2)
 
-	  def <@>[M[_], A, B, C](m1: M[A])(m2: M[B])(f: (A, B) => C)(implicit monad: Monad[M]): M[C] = {
+	  def <@>[M[_], A, B, C](f: (A, B) => C)(m1: M[A])(m2: M[B])(implicit monad: Monad[M]): M[C] = {
 		  monad.flatMap(m1){
 			  a => monad.fmap(m2){
 				  b => f(a, b)
@@ -61,7 +61,7 @@ package  com.scalametrics.models.algebra
 
 	    def compose[B, C](f1: A => M[B])(f2: B => M[C])(implicit monad: Monad[M]): A => M[C] = a => monad.flatMap(f1(a))(f2)
 
-	    def <@>[B, C](m2: M[B])(f: (A, B) => C)(implicit monad: Monad[M]): M[C] =  {
+	    def <@>[B, C](f: (A, B) => C)(m2: M[B])(implicit monad: Monad[M]): M[C] =  {
 		    monad.flatMap(m){
 			    a => monad.fmap(m2){
 				    b => f(a, b)

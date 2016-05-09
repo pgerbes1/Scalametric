@@ -3,7 +3,7 @@ package  com.scalametrics.models.algebra
 	trait Applicative[M[_]] extends Functor[M] {
 		def pure[A](v: A): M[A]
 		def <*>[A, B](a: M[A])(f: M[A => B]): M[B]
-		def <@>[A, B, C](a: M[A])( b: M[B])(f: (A, B) => C): M[C] = <*>(b)(<*>(a)(pure(f.curried)))
+		def <@>[A, B, C](f: (A, B) => C)(a: M[A])( b: M[B]): M[C] = <*>(b)(<*>(a)(pure(f.curried)))
 	}
 	object Applicative {
 		def apply[M[_] : Applicative]: Applicative[M] = implicitly
@@ -12,7 +12,7 @@ package  com.scalametrics.models.algebra
 
 		def <*>[M[_] : Applicative, A, B](a: M[A])(f: M[A => B]): M[B] = implicitly[Applicative[M]].<*>(a)(f)
 
-		def <@>[M[_], A, B, C](a: M[A])( b: M[B])(f: (A, B) => C)(implicit applic: Applicative[M]): M[C] = {
+		def <@>[M[_], A, B, C](f: (A, B) => C)(a: M[A])( b: M[B])(implicit applic: Applicative[M]): M[C] = {
 			applic.<*>(b)(applic.<*>(a)(applic.pure(f.curried)))
 		}
 
@@ -47,7 +47,7 @@ package  com.scalametrics.models.algebra
 
 			def <*>[B](f: M[A => B]): M[B] = implicitly[Applicative[M]].<*>(a)(f)
 
-			def <@>[B, C](b: M[B])(f: (A, B) => C)(implicit applic: Applicative[M]) = {
+			def <@>[B, C](f: (A, B) => C)(b: M[B])(implicit applic: Applicative[M]) = {
 				applic.<*>(b)(applic.<*>(a)(applic.pure(f.curried)))
 			}
 		}
