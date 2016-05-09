@@ -37,6 +37,6 @@ package com.scalametrics.models.algebra
 						case Vector2D(g, h) => Vector2D(g(a), h(b))
 						case Vector3D(g, h, i) => Vector3D(g(a), h(b), i(c))
 					}
-			 }
+			}
 	  }
 	}

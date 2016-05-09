@@ -36,6 +36,20 @@ package com.scalametrics.models.algebra
 		  override def inverse(l: IndexedSeq[A]): IndexedSeq[A] = l.map(x => x.inverse)
 		  def add(l1: IndexedSeq[A], l2: IndexedSeq[A]): IndexedSeq[A] = IndexedSeq((l1++l2).fold(m.empty)(m.add(_, _)))
 	  }
+	  implicit def OptionGroup[A](implicit group: Group[A]) = new Group[Option[A]] {
+		  override def empty = None
+		  override def inverse(opt: Option[A]) =
+			  opt.map{ v => group.inverse(v) }
+		  def add(o1: Option[A], o2: Option[A]): Option[A] = {
+			  if (o1.isEmpty) {
+				  o2
+			  } else if (o2.isEmpty) {
+				  o1
+			  } else {
+				  Some(group.add(o2.get, o1.get))
+			  }
+		  }
+	  }
 	  implicit class GroupOps[A : Group](g: A) {
 		  def empty: A = implicitly[Group[A]].empty
 		  def add(g2: A): A = implicitly[Group[A]].add(g, g2)
