@@ -31,10 +31,8 @@ package  com.scalametrics.models.algebra
 	  }
 
 		implicit val optionApplicative = new Applicative[Option] {
-			def pure[A](v: A): Option[A] = v match {
-				case Some(_) => Option(v)
-				case None => None
-			}
+			def pure[A](v: A): Option[A] = Option(v)
+
 			def fmap[A, B](o: Option[A])(f: A => B): Option[B] = o match {
 				case Some(_) => Option(f(o.get))
 				case None => None
