@@ -1,19 +1,18 @@
 package com.scalametrics.models.algebra
 
+  import com.scalametrics.models.algebra.VectorSpace._
+
  sealed trait DimVector[A]
  case class Vector1D[A](a: A) extends DimVector[A]
  case class Vector2D[A](a: A, b: A) extends DimVector[A]
  case class Vector3D[A](a: A, b: A, c: A) extends DimVector[A]
 
  object DimVector {
+	 implicit def dimVecSemigroup[A : Semigroup]: Semigroup[DimVector[A]] = new ApplicativeSemigroup[A, DimVector]
+   implicit def dimVecMonoid[A : Monoid]: Monoid[DimVector[A]] = new ApplicativeMonoid[A, DimVector]
+	 implicit def dimVecGroup[A : Group]: Group[DimVector[A]] = new ApplicativeGroup[A, DimVector]
 
-	 implicit def dimVecGroup[A](implicit grp: Group[A], app: Applicative[DimVector]): Group[DimVector[A]] = new Group[DimVector[A]] {
-	   def empty: DimVector[A] = app.pure(grp.empty)
-		 def add(v1: DimVector[A], v2: DimVector[A]): DimVector[A] = app.<@>{grp.add}(v1)(v2)
-		 override def inverse(v: DimVector[A]) = app.fmap(v)(grp.inverse)
-	 }
-
-	implicit val dimVecApplicative: Applicative[DimVector] = new Applicative[DimVector] {
+	 implicit val dimVecApplicative: Applicative[DimVector] = new Applicative[DimVector] {
 		def pure[A](a: A): DimVector[A] = Vector3D(a, a, a)
 
 		def fmap[A, B](fa: DimVector[A])(f: A => B): DimVector[B] =
