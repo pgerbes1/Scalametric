@@ -48,25 +48,51 @@ package  com.scalametrics.models.algebra
 
 		  def flatMap[A, B](o: Option[A])(f: A => Option[B]): Option[B] = o.flatMap(f)
 	  }
-    implicit class MonadOps[A, M[_]](m: M[A]) {
-	    def pure(v: A)(implicit monad: Monad[M]): M[A] = monad.pure(v)
+	  implicit val some: Monad[Some] = new Monad[Some] {
+		  def pure[A](v: A) = Some(v)
+		  
+		  def flatMap[A, B](m: Some[A])(fn: A => Some[B]) = fn(m.get)
+	  }
+	  implicit val vector: Monad[Vector] = new Monad[Vector] {
+		  def pure[A](v: A) = Vector(v)
+		  
+		  def flatMap[A, B](m: Vector[A])(fn: A => Vector[B]) = m.flatMap(fn)
+	  }
+	  implicit val set: Monad[Set] = new Monad[Set] {
+		  def pure[A](v: A) = Set(v)
+		  
+		  def flatMap[A, B](m: Set[A])(fn: A => Set[B]) = m.flatMap(fn)
+	  }
+	  implicit val seq: Monad[Seq] = new Monad[Seq] {
+		  def pure[A](v: A) = Seq(v)
 
-	    def flatMap[B](f: A => M[B])(implicit monad: Monad[M]): M[B] = monad.flatMap(m)(f)
+		  def flatMap[A, B](m: Seq[A])(fn: A => Seq[B]) = m.flatMap(fn)
+	  }
+	  implicit val indexedseq: Monad[IndexedSeq] = new Monad[IndexedSeq] {
+		  def pure[A](v: A) = IndexedSeq(v)
 
-	    def fmap[B](f: A => B)(implicit monad: Monad[M]): M[B] = monad.flatMap(m)(a => monad.pure(f(a)))
+		  def flatMap[A, B](m: IndexedSeq[A])(fn: A => IndexedSeq[B]) = m.flatMap(fn)
+	  }
 
-	    def <*>[B](f: M[A => B])(implicit monad: Monad[M]): M[B] = monad.flatMap(m)(a => monad.fmap(f)(b => b(a)))
+	  implicit class MonadOps[A, M[_]](m: M[A]) {
+		  def pure(v: A)(implicit monad: Monad[M]): M[A] = monad.pure(v)
 
-	    def flatten(m: M[M[A]])(implicit monad: Monad[M]): M[A] = implicitly[Monad[M]].flatMap(m)(m => m)
+		  def flatMap[B](f: A => M[B])(implicit monad: Monad[M]): M[B] = monad.flatMap(m)(f)
 
-	    def compose[B, C](f1: A => M[B])(f2: B => M[C])(implicit monad: Monad[M]): A => M[C] = a => monad.flatMap(f1(a))(f2)
+		  def fmap[B](f: A => B)(implicit monad: Monad[M]): M[B] = monad.flatMap(m)(a => monad.pure(f(a)))
 
-	    def <@>[B, C](f: (A, B) => C)(m2: M[B])(implicit monad: Monad[M]): M[C] =  {
-		    monad.flatMap(m){
-			    a => monad.fmap(m2){
-				    b => f(a, b)
-			    }
-		    }
-	    }
-    }
+		  def <*>[B](f: M[A => B])(implicit monad: Monad[M]): M[B] = monad.flatMap(m)(a => monad.fmap(f)(b => b(a)))
+
+		  def flatten(m: M[M[A]])(implicit monad: Monad[M]): M[A] = implicitly[Monad[M]].flatMap(m)(m => m)
+
+		  def compose[B, C](f1: A => M[B])(f2: B => M[C])(implicit monad: Monad[M]): A => M[C] = a => monad.flatMap(f1(a))(f2)
+
+		  def <@>[B, C](f: (A, B) => C)(m2: M[B])(implicit monad: Monad[M]): M[C] =  {
+			  monad.flatMap(m){
+				  a => monad.fmap(m2){
+					  b => f(a, b)
+				  }
+			  }
+		  }
+	  }
   }
