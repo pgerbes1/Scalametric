@@ -7,6 +7,12 @@ package com.scalametrics.models.algebra
 
  object DimVector {
 
+	 implicit def dimVecGroup[A](implicit grp: Group[A], app: Applicative[DimVector]): Group[DimVector[A]] = new Group[DimVector[A]] {
+	   def empty: DimVector[A] = app.pure(grp.empty)
+		 def add(v1: DimVector[A], v2: DimVector[A]): DimVector[A] = app.<@>{grp.add}(v1)(v2)
+		 override def inverse(v: DimVector[A]) = app.fmap(v)(grp.inverse)
+	 }
+
 	implicit val dimVecApplicative: Applicative[DimVector] = new Applicative[DimVector] {
 		def pure[A](a: A): DimVector[A] = Vector3D(a, a, a)
 

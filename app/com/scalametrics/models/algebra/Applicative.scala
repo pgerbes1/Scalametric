@@ -57,27 +57,27 @@ package  com.scalametrics.models.algebra
 	  def add(l: M[A], r: M[A]) = ap.<@>(sg.add)(l)(r)
   }
 
-  class ApplicativeMonoid[T, M[_]](implicit app: Applicative[M], mon: Monoid[T]) extends ApplicativeSemigroup[T, M]
-	  with Monoid[M[T]] {
+  class ApplicativeMonoid[A, M[_]](implicit app: Applicative[M], mon: Monoid[A]) extends ApplicativeSemigroup[A, M]
+	  with Monoid[M[A]] {
 	  lazy val empty = app.pure(mon.empty)
   }
 
-  class ApplicativeGroup[T, M[_]](implicit app: Applicative[M], grp: Group[T]) extends ApplicativeMonoid[T, M]
-	  with Group[M[T]] {
-	  override def inverse(v: M[T]) = app.fmap(v)(grp.inverse)
-	  override def minus(l: M[T], r: M[T]) = app.<@>(grp.minus)(l)(r)
+  class ApplicativeGroup[A, M[_]](implicit app: Applicative[M], grp: Group[A]) extends ApplicativeMonoid[A, M]
+	  with Group[M[A]] {
+	  override def inverse(v: M[A]) = app.fmap(v)(grp.inverse)
+	  override def minus(l: M[A], r: M[A]) = app.<@>(grp.minus)(l)(r)
   }
 
-  class ApplicativeRing[T, M[_]](implicit app: Applicative[M], ring: Ring[T]) extends ApplicativeGroup[T, M]
-	  with Ring[M[T]] {
+  class ApplicativeRing[A, M[_]](implicit app: Applicative[M], ring: Ring[A]) extends ApplicativeGroup[A, M]
+	  with Ring[M[A]] {
 	  lazy val identity = app.pure(ring.identity)
-	  def multiply(l: M[T], r: M[T]) = app.<@>(ring.multiply)(l)(r)
+	  def multiply(l: M[A], r: M[A]) = app.<@>(ring.multiply)(l)(r)
   }
 
-  class ApplicativeField[T, M[_]](implicit app: Applicative[M], fld: Field[T]) extends ApplicativeRing[T, M]
-	  with Field[M[T]] {
-	  override def inverse(v: M[T]) = app.fmap(v)(fld.inverse)
-	  override def divide(l: M[T], r: M[T]) = app.<@>(fld.divide)(l)(r)
+  class ApplicativeField[A, M[_]](implicit app: Applicative[M], fld: Field[A]) extends ApplicativeRing[A, M]
+	  with Field[M[A]] {
+	  override def inverse(v: M[A]) = app.fmap(v)(fld.inverse)
+	  override def divide(l: M[A], r: M[A]) = app.<@>(fld.divide)(l)(r)
   }
 
 
