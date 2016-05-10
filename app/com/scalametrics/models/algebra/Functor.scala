@@ -1,5 +1,7 @@
 package  com.scalametrics.models.algebra
 
+import scala.languageFeature.higherKinds
+
   trait Functor[M[_]] {
 	  def fmap[A, B](m: M[A])(f: A => B): M[B]
   }

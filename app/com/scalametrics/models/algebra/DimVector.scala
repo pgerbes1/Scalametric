@@ -1,11 +1,9 @@
 package com.scalametrics.models.algebra
 
-  import com.scalametrics.models.algebra.VectorSpace._
-
  sealed trait DimVector[A]
- case class Vector1D[A](a: A) extends DimVector[A]
- case class Vector2D[A](a: A, b: A) extends DimVector[A]
- case class Vector3D[A](a: A, b: A, c: A) extends DimVector[A]
+ final case class Vector1D[A](a: A) extends DimVector[A]
+ final case class Vector2D[A](a: A, b: A) extends DimVector[A]
+ final case class Vector3D[A](a: A, b: A, c: A) extends DimVector[A]
 
  object DimVector {
 	 implicit def dimVecSemigroup[A : Semigroup]: Semigroup[DimVector[A]] = new ApplicativeSemigroup[A, DimVector]

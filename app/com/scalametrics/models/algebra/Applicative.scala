@@ -1,9 +1,12 @@
 package  com.scalametrics.models.algebra
 
+import scala.languageFeature.higherKinds
+
   trait Applicative[M[_]] extends Functor[M] {
 	  def pure[A](v: A): M[A]
 	  def <*>[A, B](a: M[A])(f: M[A => B]): M[B]
 	  def <@>[A, B, C](f: (A, B) => C)(a: M[A])( b: M[B]): M[C] = <*>(b)(<*>(a)(pure(f.curried)))
+	  def <@@>[A, B, C, D](f: (A, B, C) => D)(a: M[A])(b: M[B])(c: M[C]): M[D] = <*>(c)(<*>(b)(<*>(a)(pure(f.curried))))
   }
   object Applicative {
 	  def apply[M[_] : Applicative]: Applicative[M] = implicitly
@@ -14,6 +17,10 @@ package  com.scalametrics.models.algebra
 
 	  def <@>[M[_], A, B, C](f: (A, B) => C)(a: M[A])( b: M[B])(implicit applic: Applicative[M]): M[C] = {
 		  applic.<*>(b)(applic.<*>(a)(applic.pure(f.curried)))
+	  }
+
+	  def <@@>[M[_], A, B, C, D](f: (A, B, C) => D)(a: M[A])( b: M[B])(c: M[C])(implicit applic: Applicative[M]): M[D] = {
+		  applic.<*>(c)(applic.<*>(b)(applic.<*>(a)(applic.pure(f.curried))))
 	  }
 
 	  implicit val listApplicative: Applicative[List] = new Applicative[List] {
@@ -49,6 +56,10 @@ package  com.scalametrics.models.algebra
 
 		  def <@>[B, C](f: (A, B) => C)(b: M[B])(implicit applic: Applicative[M]) = {
 			  applic.<*>(b)(applic.<*>(a)(applic.pure(f.curried)))
+		  }
+
+		  def <@@>[B, C, D](f: (A, B, C) => D)(b: M[B])(c: M[C])(implicit applic: Applicative[M]) = {
+			  applic.<*>(c)(applic.<*>(b)(applic.<*>(a)(applic.pure(f.curried))))
 		  }
 	  }
   }
