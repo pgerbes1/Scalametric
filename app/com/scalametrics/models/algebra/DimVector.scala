@@ -7,14 +7,35 @@ package com.scalametrics.models.algebra
 
  object DimVector {
 	 import VectorSpace._
+	 import Ring._
+	 import Foldable._
+
+	 def innerProduct[A](v: DimVector[A], w: DimVector[A])
+	                    (implicit rng: Ring[DimVector[A]], mon: Monoid[A]): A = v.multiply(w).fold
+
+	 def crossProduct[A](v: Vector3D[A],
+	                     w: Vector3D[A])(implicit rng: Ring[A]): Vector3D[A] = {
+		 def crossHelper(m: A, n: A, p: A, q: A): A = {
+			 rng.minus(rng.multiply(m, n), rng.multiply(p, q))
+		 }
+		 val s1 = crossHelper(v.c, w.b, v.b, w.c)
+		 val s2 = crossHelper(v.a, w.c, v.c, w.a)
+		 val s3 = crossHelper(v.a, w.b, v.b, w.a)
+		 Vector3D(s1, s2, s3)
+	 }
 
 	 implicit def dimVecSemigroup[A : Semigroup]: Semigroup[DimVector[A]] = new ApplicativeSemigroup[A, DimVector]
-   implicit def dimVecMonoid[A : Monoid]: Monoid[DimVector[A]] = new ApplicativeMonoid[A, DimVector]
+	 implicit def dimVecMonoid[A : Monoid]: Monoid[DimVector[A]] = new ApplicativeMonoid[A, DimVector]
 	 implicit def dimVecGroup[A : Group]: Group[DimVector[A]] = new ApplicativeGroup[A, DimVector]
 	 implicit def dimVecRing[A : Ring]: Ring[DimVector[A]] = new ApplicativeRing[A, DimVector]
 
 	 implicit def dimVectorSpace[A : Field] = from[A, DimVector] {
 		 (s, vec) => dimVecApplicative.fmap(vec)(scale => Field.multiply(s, scale))
+	 }
+
+	 implicit val dimVecMetric = Metric.from { (v: DimVector[Double], w: DimVector[Double]) =>
+		 val sub = v.minus(w)
+		 math.sqrt(sub.multiply(sub).fold)
 	 }
 
 	 implicit val dimVecFoldable: Foldable[DimVector] = new Foldable[DimVector] {
