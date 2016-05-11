@@ -26,7 +26,7 @@ package  com.scalametrics.models.algebra
 	  }
 	  implicit def indexedSeqMonoid[A](implicit m: Monoid[A]) = new Monoid[IndexedSeq[A]] {
 		  def empty: IndexedSeq[A] = IndexedSeq()
-		  def add(l1: IndexedSeq[A], l2: IndexedSeq[A]): IndexedSeq[A] = IndexedSeq((l1++l2).fold(m.empty)(m.add(_, _)))
+		  def add(l1: IndexedSeq[A], l2: IndexedSeq[A]): IndexedSeq[A] = l1 ++ l2
 	  }
 	  implicit def OptionMonoid[A](implicit semi: Semigroup[A]) = new Monoid[Option[A]] {
 		  lazy val empty = None
