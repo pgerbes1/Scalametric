@@ -1,4 +1,4 @@
 # Scalametric
-A Play 2.0 Scala project experimenting with functional programming, data science and API design. 
+Scala Play 2.0 project experimenting with functional programming and geometry 
 
-Meant for research not production....for now. 
+Hopefully will one day be useful API/Library for computational geometry. 
