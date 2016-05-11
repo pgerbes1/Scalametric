@@ -6,9 +6,32 @@ package com.scalametrics.models.algebra
  final case class Vector3D[A](a: A, b: A, c: A) extends DimVector[A]
 
  object DimVector {
+	 import VectorSpace._
+
 	 implicit def dimVecSemigroup[A : Semigroup]: Semigroup[DimVector[A]] = new ApplicativeSemigroup[A, DimVector]
    implicit def dimVecMonoid[A : Monoid]: Monoid[DimVector[A]] = new ApplicativeMonoid[A, DimVector]
 	 implicit def dimVecGroup[A : Group]: Group[DimVector[A]] = new ApplicativeGroup[A, DimVector]
+	 implicit def dimVecRing[A : Ring]: Ring[DimVector[A]] = new ApplicativeRing[A, DimVector]
+
+	 implicit def dimVectorSpace[A : Field] = from[A, DimVector] {
+		 (s, vec) => dimVecApplicative.fmap(vec)(scale => Field.multiply(s, scale))
+	 }
+
+	 implicit val dimVecFoldable: Foldable[DimVector] = new Foldable[DimVector] {
+		 override def foldLeft[A, B](fa: DimVector[A])(init: B)(f: (B, A) => B): B =
+			 fa match {
+				 case Vector1D(a) => f(init, a)
+				 case Vector2D(a, b) => f(f(init, a), b)
+				 case Vector3D(a, b, c) => f(f(f(init, a), b), c)
+			 }
+
+		 override def foldRight[A, B](fa: DimVector[A])(init: B)(f: (A, B) => B): B =
+			 fa match {
+				 case Vector1D(a) => f(a, init)
+				 case Vector2D(a, b) => f(b, f(a, init))
+				 case Vector3D(a, b, c) => f(c, f(b, f(a, init)))
+			 }
+	 }
 
 	 implicit val dimVecApplicative: Applicative[DimVector] = new Applicative[DimVector] {
 		def pure[A](a: A): DimVector[A] = Vector3D(a, a, a)
