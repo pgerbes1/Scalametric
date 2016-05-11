@@ -15,12 +15,12 @@ package com.scalametrics.models.algebra
 
 	 def crossProduct[A](v: Vector3D[A],
 	                     w: Vector3D[A])(implicit rng: Ring[A]): Vector3D[A] = {
-		 def crossHelper(m: A, n: A, p: A, q: A): A = {
+		 def crossHelper(m: A, n: A)(p: A, q: A): A = {
 			 rng.minus(rng.multiply(m, n), rng.multiply(p, q))
 		 }
-		 val s1 = crossHelper(v.c, w.b, v.b, w.c)
-		 val s2 = crossHelper(v.a, w.c, v.c, w.a)
-		 val s3 = crossHelper(v.a, w.b, v.b, w.a)
+		 val s1 = crossHelper(v.c, w.b)(v.b, w.c)
+		 val s2 = crossHelper(v.a, w.c)(v.c, w.a)
+		 val s3 = crossHelper(v.a, w.b)(v.b, w.a)
 		 Vector3D(s1, s2, s3)
 	 }
 
