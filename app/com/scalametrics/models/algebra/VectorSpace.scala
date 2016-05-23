@@ -27,23 +27,3 @@ import scala.languageFeature.higherKinds
 		  def scale(s: A) = vs.scale(s, r)
 	  }
   }
-/*
-
-  trait NormedVectorSpace[A, M[_]] extends  VectorSpace[A, M] with Metric[A] {
-	  def normalize(v: M[A]): M[A]
-  }
-
-  object NormedVectorSpace {
-	  def apply[M[_] : NormedVectorSpace, A]: NormedVectorSpace[A, M] = implicitly
-	  def normalize[M[_], A](v: M[A])(implicit nvs: NormedVectorSpace[A, M]): M[A] = nvs.normalize(v)
-  }
-
-  trait InnerProductSpace[A, M[_]] extends VectorSpace[A , M] {
-	  def dot(v: M[A], w: M[A]): A
-  }
-
-  object InnerProductSpace {
-	  def apply[M[_] : InnerProductSpace, A]: InnerProductSpace[A, M] = implicitly
-	  def dot[M[_], A](v: M[A], v2: M[A])(implicit ips: InnerProductSpace[A, M]): A = ips.dot(v, v2)
-  }
-*/
