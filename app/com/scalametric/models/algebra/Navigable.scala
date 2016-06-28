@@ -1,4 +1,4 @@
-package com.scalametrics.models.algebra
+package com.scalametric.models.algebra
 
 //Navigable...Traversable...get it?
 trait Navigable[M[_]] {

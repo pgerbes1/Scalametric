@@ -1,4 +1,4 @@
-package  com.scalametrics.models.algebra
+package  com.scalametric.models.algebra
 
   trait Monad[M[_]] extends Applicative[M] {
 	  override def pure[A](v: A): M[A]

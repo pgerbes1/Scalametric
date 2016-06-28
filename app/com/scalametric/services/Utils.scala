@@ -1,4 +1,4 @@
-package com.scalametrics.services
+package com.scalametric.services
 
 object Utils {
 	def roundAt(decimalPlaces: Int)(n: Double): Double = {

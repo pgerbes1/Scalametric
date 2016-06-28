@@ -1,4 +1,4 @@
-package com.scalametrics.models.algebra
+package com.scalametric.models.algebra
 
   trait Semigroup[A] {
 	  def add(s1: A, s2: A): A

@@ -1,8 +1,8 @@
-package com.scalametrics.controllers
+package com.scalametric.controllers
 
 
 
-  import com.scalametrics.models._
+  import com.scalametric.models._
   import play.api.mvc._
   import play.api.libs.json._
 

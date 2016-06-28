@@ -1,4 +1,4 @@
-package com.scalametrics.models.algebra
+package com.scalametric.models.algebra
 
   trait Ring[A] extends Group[A] {
     def identity: A

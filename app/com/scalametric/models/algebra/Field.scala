@@ -1,4 +1,4 @@
-package com.scalametrics.models.algebra
+package com.scalametric.models.algebra
 
   trait Field[A] extends Ring[A] {
 	  def divide(s1: A, s2: A): A

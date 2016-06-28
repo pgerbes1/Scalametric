@@ -1,4 +1,4 @@
-package com.scalametrics.controllers
+package com.scalametric.controllers
 
 import play.api.mvc._
 

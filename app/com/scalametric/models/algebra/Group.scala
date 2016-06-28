@@ -1,4 +1,4 @@
-package com.scalametrics.models.algebra
+package com.scalametric.models.algebra
 
   trait Group[A] extends Monoid[A] {
 		def inverse(v: A): A = minus(empty, v)
